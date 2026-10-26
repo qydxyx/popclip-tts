@@ -1,12 +1,12 @@
 # PopClip TTS Extension (Gemini & ElevenLabs)
 
-A lightweight, zero-dependency [PopClip](https://popclip.app/) extension for macOS that reads selected text aloud using Google Gemini TTS and ElevenLabs text-to-speech APIs.
+A lightweight, zero-dependency [PopClip](https://popclip.app/) extension for macOS that reads selected text aloud using Google Gemini, ElevenLabs, and Alibaba Cloud Bailian (DashScope) text-to-speech APIs.
 
 ---
 
 ## Features
 
-- **Dual Provider Support**: Seamlessly switch between Google Gemini and ElevenLabs within PopClip extension preferences.
+- **Multi-Provider Support**: Seamlessly switch between Google Gemini, ElevenLabs, and Alibaba Cloud Bailian (百炼) in preferences.
 - **Smart Single-Button Action**: Adds a single speaker button (`speaker.wave.2.fill`) to the PopClip bar.
 - **Background Playback & Toggle Stop**: Plays audio asynchronously in the background via macOS `/usr/bin/afplay`. Clicking again on the same text stops playback immediately; clicking on new text interrupts the previous speech and starts the new one.
 - **Secure Keychain Storage**: API keys are securely managed by PopClip and stored directly in the macOS Keychain.
@@ -38,6 +38,7 @@ In PopClip Preferences -> **Extensions** -> click the gear icon next to **TTS / 
 ### 1. Service Provider
 - **Gemini** (Default): High throughput, ultra-low latency, and natural inflection across 100+ languages.
 - **ElevenLabs**: Expressive, highly nuanced vocal acting with rich voice cloning capabilities across 32+ languages.
+- **Alibaba Bailian (阿里云百炼)**: High-fidelity Chinese, English, dialect, and cross-lingual speech synthesis powered by Qwen-Audio 3.1 TTS.
 
 ### 2. Gemini Settings
 - **API Key** (Required): Obtain your key from [Google AI Studio](https://aistudio.google.com/).
@@ -78,6 +79,24 @@ In PopClip Preferences -> **Extensions** -> click the gear icon next to **TTS / 
     - `Callum` (Multilingual male, dramatic)
     - `Freya` (Multilingual female, expressive)
   - Supports pasting any custom or cloned `voice_id` via `Other...`.
+
+### 4. Alibaba Cloud Bailian (阿里云百炼) Settings
+- **API Key** (Required): Obtain your DashScope API key from [Alibaba Cloud Model Studio (百炼控制台)](https://bailian.console.aliyun.com/).
+- **Model**:
+  - `qwen-audio-3.1-tts-flash` (Default: ultra-low latency, real-time interactive model)
+  - `qwen-audio-3.1-tts-plus` (Flagship studio-grade model for maximum fidelity)
+  - Supports typing any custom Qwen/DashScope TTS model ID via `Other...`.
+- **Voice**:
+  - **Chinese & Multilingual / Dialects**:
+    - `longanlingxin_v3.1` (Default: 龙安灵心, female, gentle & supports French/Yunnan/Shaanxi/Shanghainese)
+    - `longanhuan_v3.1` (龙安环, female, lively)
+    - `longanfengyue_v3.1` (龙安风悦, female, intellectual & calm)
+    - `xunanchuan_v3.1` (许南川, male, professional broadcast)
+    - `longanqian_v3.1` (龙安谦, male, gentle & refined)
+  - **English (American Accents)**:
+    - Female: `Annie_v3.1`, `Ava_v3.1`, `Beth_v3.1`, `Betty_v3.1`, `Cally_v3.1`, `Cindy_v3.1`, `Donna_v3.1`
+    - Male: `Andy_v3.1`, `Brian_v3.1`, `David_v3.1`
+  - Supports entering any custom or fine-tuned voice ID via `Other...`.
 
 ---
 

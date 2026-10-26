@@ -161,6 +161,68 @@ class TestTTSSynthesis(unittest.TestCase):
         self.assertEqual(payload["text"], "Testing ElevenLabs")
         self.assertEqual(payload["model_id"], "eleven_flash_v2_5")
 
+    @patch("urllib.request.urlopen")
+    def test_synthesize_bailian_json_url(self, mock_urlopen):
+        # 1st call: DashScope API returning audio URL
+        mock_api_resp = MagicMock()
+        mock_api_resp.headers = {"Content-Type": "application/json"}
+        mock_api_resp.read.return_value = json.dumps({
+            "output": {
+                "audio": {
+                    "url": "https://dashscope-result.oss.aliyuncs.com/audio.mp3",
+                    "id": "audio-123",
+                }
+            }
+        }).encode("utf-8")
+
+        # 2nd call: downloading audio file from OSS URL
+        mock_dl_resp = MagicMock()
+        mock_dl_resp.read.return_value = b"BAILIAN_AUDIO_BYTES"
+
+        mock_urlopen.side_effect = [
+            MagicMock(__enter__=MagicMock(return_value=mock_api_resp)),
+            MagicMock(__enter__=MagicMock(return_value=mock_dl_resp)),
+        ]
+
+        audio_bytes, ext = tts.synthesize_bailian(
+            text="你好百炼",
+            api_key="test-bailian-key",
+            model="qwen-audio-3.1-tts-flash",
+            voice="longanlingxin_v3.1",
+        )
+
+        self.assertEqual(ext, ".mp3")
+        self.assertEqual(audio_bytes, b"BAILIAN_AUDIO_BYTES")
+
+        first_req = mock_urlopen.call_args_list[0][0][0]
+        self.assertIn("SpeechSynthesizer", first_req.full_url)
+        self.assertEqual(first_req.headers["Authorization"], "Bearer test-bailian-key")
+        payload = json.loads(first_req.data.decode("utf-8"))
+        self.assertEqual(payload["model"], "qwen-audio-3.1-tts-flash")
+        self.assertEqual(payload["input"]["text"], "你好百炼")
+        self.assertEqual(payload["input"]["voice"], "longanlingxin_v3.1")
+
+        second_req = mock_urlopen.call_args_list[1][0][0]
+        self.assertEqual(second_req.full_url, "https://dashscope-result.oss.aliyuncs.com/audio.mp3")
+
+    @patch("urllib.request.urlopen")
+    def test_synthesize_bailian_direct_audio(self, mock_urlopen):
+        raw_mp3 = b"ID3_DIRECT_MP3"
+        mock_resp = MagicMock()
+        mock_resp.headers = {"Content-Type": "audio/mpeg"}
+        mock_resp.read.return_value = raw_mp3
+        mock_urlopen.return_value.__enter__.return_value = mock_resp
+
+        audio_bytes, ext = tts.synthesize_bailian(
+            text="Hello Bailian",
+            api_key="test-key",
+            model="qwen-audio-3.1-tts-plus",
+            voice="longanhuan_v3.1",
+        )
+
+        self.assertEqual(ext, ".mp3")
+        self.assertEqual(audio_bytes, raw_mp3)
+
 
 class TestHTTPErrorHandling(unittest.TestCase):
     def test_auth_errors_return_2(self):
@@ -311,6 +373,16 @@ class TestMainWorkflow(unittest.TestCase):
              patch("sys.stderr", new=io.StringIO()):
             self.assertEqual(tts.main(), 2)
 
+    def test_missing_bailian_api_key_exits_2(self):
+        env = {
+            "POPCLIP_OPTION_PROVIDER": "bailian",
+            "POPCLIP_OPTION_BAILIAN_API_KEY": "",
+        }
+        with patch("tts.get_input_text", return_value="Hello"), \
+             patch.dict(os.environ, env, clear=True), \
+             patch("sys.stderr", new=io.StringIO()):
+            self.assertEqual(tts.main(), 2)
+
     @patch("tts.check_and_stop_previous", return_value=True)
     def test_toggle_stop_exits_0_without_calling_api(self, mock_stop):
         with patch("tts.get_input_text", return_value="Stop me"), \
@@ -333,6 +405,24 @@ class TestMainWorkflow(unittest.TestCase):
             self.assertEqual(tts.main(), 0)
             mock_synth.assert_called_once_with(
                 "Read this text", "valid-key", "gemini-3.8-flash-lite-tts", "Kore"
+            )
+            mock_play.assert_called_once()
+
+    @patch("tts.start_playback")
+    @patch("tts.synthesize_bailian", return_value=(b"BAILIAN_AUDIO", ".mp3"))
+    @patch("tts.check_and_stop_previous", return_value=False)
+    def test_successful_bailian_play(self, mock_stop, mock_synth, mock_play):
+        env = {
+            "POPCLIP_OPTION_PROVIDER": "bailian",
+            "POPCLIP_OPTION_BAILIAN_API_KEY": "bailian-key",
+            "POPCLIP_OPTION_BAILIAN_MODEL": "qwen-audio-3.1-tts-flash",
+            "POPCLIP_OPTION_BAILIAN_VOICE": "longanlingxin_v3.1",
+        }
+        with patch("tts.get_input_text", return_value="测试百炼朗读"), \
+             patch.dict(os.environ, env, clear=True):
+            self.assertEqual(tts.main(), 0)
+            mock_synth.assert_called_once_with(
+                "测试百炼朗读", "bailian-key", "qwen-audio-3.1-tts-flash", "longanlingxin_v3.1", endpoint=""
             )
             mock_play.assert_called_once()
 

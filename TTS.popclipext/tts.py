@@ -145,7 +145,13 @@ def handle_http_error(err: urllib.error.HTTPError) -> int:
 
     if err.code == 400:
         body_lower = body.lower()
-        if "api_key_invalid" in body_lower or "api key not valid" in body_lower or "invalid api key" in body_lower:
+        if (
+            "api_key_invalid" in body_lower
+            or "invalidapikey" in body_lower
+            or "api key not valid" in body_lower
+            or "invalid api key" in body_lower
+            or "invalid api-key" in body_lower
+        ):
             sys.stderr.write(f"Invalid API key: {body}\n")
             return 2
         sys.stderr.write(f"Bad request (400): {body or err.reason}\n")
@@ -229,6 +235,91 @@ def synthesize_elevenlabs(
 
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         audio_data = resp.read()
+
+    return audio_data, ".mp3"
+
+
+def synthesize_bailian(
+    text: str,
+    api_key: str,
+    model: str,
+    voice: str,
+    timeout: float = HTTP_TIMEOUT,
+    endpoint: str = "",
+) -> tuple[bytes, str]:
+    """Call Alibaba Cloud DashScope / Bailian SpeechSynthesizer API."""
+    url = (
+        endpoint.strip()
+        if endpoint
+        else "https://dashscope.aliyuncs.com/api/v1/services/audio/tts/SpeechSynthesizer"
+    )
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+    payload = {
+        "model": model,
+        "input": {
+            "text": text,
+            "voice": voice,
+            "format": "mp3",
+            "sample_rate": 24000,
+        },
+    }
+
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers=headers,
+        method="POST",
+    )
+
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        content_type = resp.headers.get("Content-Type", "")
+        raw_body = resp.read()
+
+    # Check if raw audio binary returned directly
+    if (
+        "audio/" in content_type
+        or raw_body.startswith(b"ID3")
+        or raw_body[:2] == b"\xff\xfb"
+        or raw_body.startswith(b"RIFF")
+    ):
+        suffix = ".wav" if raw_body.startswith(b"RIFF") else ".mp3"
+        return raw_body, suffix
+
+    # Otherwise parse JSON response
+    try:
+        resp_data = json.loads(raw_body.decode("utf-8"))
+    except Exception as exc:
+        raise ValueError(f"Malformed Bailian response: {exc}") from exc
+
+    if "code" in resp_data and resp_data["code"] not in (200, "200", "SUCCESS", "Success"):
+        code = str(resp_data.get("code"))
+        msg = resp_data.get("message", "")
+        if code in ("InvalidApiKey", "Unauthorized", "401", "403"):
+            sys.stderr.write(f"Authentication failed ({code}): {msg}\n")
+            sys.exit(2)
+        sys.stderr.write(f"Bailian TTS error ({code}): {msg}\n")
+        sys.exit(1)
+
+    audio_url = None
+    output = resp_data.get("output", {})
+    if isinstance(output, dict):
+        audio_obj = output.get("audio", {})
+        if isinstance(audio_obj, dict):
+            audio_url = audio_obj.get("url")
+            if not audio_url and "data" in audio_obj:
+                return base64.b64decode(audio_obj["data"]), ".mp3"
+        elif isinstance(audio_obj, str) and audio_obj.startswith("http"):
+            audio_url = audio_obj
+
+    if not audio_url:
+        raise ValueError(f"No audio URL in Bailian response: {resp_data}")
+
+    dl_req = urllib.request.Request(audio_url)
+    with urllib.request.urlopen(dl_req, timeout=timeout) as dl_resp:
+        audio_data = dl_resp.read()
 
     return audio_data, ".mp3"
 
@@ -318,6 +409,26 @@ def main() -> int:
             )
 
             audio_bytes, suffix = synthesize_elevenlabs(text, api_key, model, voice)
+
+        elif provider in ("bailian", "dashscope", "aliyun"):
+            api_key = os.environ.get("POPCLIP_OPTION_BAILIAN_API_KEY", "").strip()
+            if not api_key:
+                sys.stderr.write("Alibaba Bailian API Key is required\n")
+                return 2
+
+            model = (
+                os.environ.get("POPCLIP_OPTION_BAILIAN_MODEL", "").strip()
+                or "qwen-audio-3.1-tts-flash"
+            )
+            voice = (
+                os.environ.get("POPCLIP_OPTION_BAILIAN_VOICE", "").strip()
+                or "longanlingxin_v3.1"
+            )
+            endpoint = os.environ.get("POPCLIP_OPTION_BAILIAN_ENDPOINT", "").strip()
+
+            audio_bytes, suffix = synthesize_bailian(
+                text, api_key, model, voice, endpoint=endpoint
+            )
 
         else:
             sys.stderr.write(f"Unsupported provider: {provider}\n")

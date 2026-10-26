@@ -19,9 +19,11 @@ options:
     values:
       - gemini
       - elevenlabs
+      - bailian
     valueLabels:
       - Gemini
       - ElevenLabs
+      - Alibaba Bailian (阿里云百炼)
     defaultValue: gemini
 
   - identifier: gemini_heading
@@ -161,4 +163,70 @@ options:
       - Callum (Multilingual · Dramatic)
       - Freya (Multilingual · Expressive)
     defaultValue: 21m00Tcm4TlvDq8ikWAM
+    inset: true
+
+  - identifier: bailian_heading
+    type: heading
+    label:
+      en: Alibaba Bailian Settings
+      zh-Hans: 阿里云百炼设置
+
+  - identifier: bailian_api_key
+    label:
+      en: API Key
+      zh-Hans: API Key
+    type: secret
+    inset: true
+
+  - identifier: bailian_model
+    label:
+      en: Model
+      zh-Hans: 模型
+    type: multiple
+    allowOther: true
+    values:
+      - qwen-audio-3.1-tts-flash
+      - qwen-audio-3.1-tts-plus
+    defaultValue: qwen-audio-3.1-tts-flash
+    inset: true
+
+  - identifier: bailian_voice
+    label:
+      en: Voice
+      zh-Hans: 音色
+    type: multiple
+    allowOther: true
+    values:
+      - longanlingxin_v3.1
+      - longanhuan_v3.1
+      - longanfengyue_v3.1
+      - xunanchuan_v3.1
+      - longanqian_v3.1
+      - Annie_v3.1
+      - Ava_v3.1
+      - Beth_v3.1
+      - Betty_v3.1
+      - Cally_v3.1
+      - Cindy_v3.1
+      - Donna_v3.1
+      - Andy_v3.1
+      - Brian_v3.1
+      - David_v3.1
+    valueLabels:
+      - 龙安灵心 (Chinese Female · 多语种/方言)
+      - 龙安环 (Chinese Female · 活泼)
+      - 龙安风悦 (Chinese Female · 知性)
+      - 许南川 (Chinese Male · 播音)
+      - 龙安谦 (Chinese Male · 儒雅)
+      - Annie (English Female · American)
+      - Ava (English Female · American)
+      - Beth (English Female · American)
+      - Betty (English Female · American)
+      - Cally (English Female · American)
+      - Cindy (English Female · American)
+      - Donna (English Female · American)
+      - Andy (English Male · American)
+      - Brian (English Male · American)
+      - David (English Male · American)
+    defaultValue: longanlingxin_v3.1
     inset: true
