@@ -78,7 +78,7 @@ class TestTTSSynthesis(unittest.TestCase):
         audio_bytes, ext = tts.synthesize_gemini(
             text="Hello world",
             api_key="test-gemini-key",
-            model="gemini-2.5-flash-preview-tts",
+            model="gemini-3.8-flash-lite-tts",
             voice="Kore",
         )
 
@@ -87,7 +87,7 @@ class TestTTSSynthesis(unittest.TestCase):
 
         # Verify request call args
         req = mock_urlopen.call_args[0][0]
-        self.assertIn("gemini-2.5-flash-preview-tts:generateContent", req.full_url)
+        self.assertIn("gemini-3.8-flash-lite-tts:generateContent", req.full_url)
         self.assertEqual(req.headers["X-goog-api-key"], "test-gemini-key")
         self.assertEqual(req.headers["Content-type"], "application/json")
 
@@ -127,8 +127,8 @@ class TestTTSSynthesis(unittest.TestCase):
         audio_bytes, ext = tts.synthesize_gemini(
             text="Hello world",
             api_key="test-key",
-            model="gemini-2.5-flash-preview-tts",
-            voice="Kore",
+            model="gemini-3.8-flash-tts",
+            voice="Puck",
         )
 
         self.assertEqual(ext, ".mp3")
@@ -325,14 +325,14 @@ class TestMainWorkflow(unittest.TestCase):
         env = {
             "POPCLIP_OPTION_PROVIDER": "gemini",
             "POPCLIP_OPTION_GEMINI_API_KEY": "valid-key",
-            "POPCLIP_OPTION_GEMINI_MODEL": "gemini-2.5-flash-preview-tts",
+            "POPCLIP_OPTION_GEMINI_MODEL": "gemini-3.8-flash-lite-tts",
             "POPCLIP_OPTION_GEMINI_VOICE": "Kore",
         }
         with patch("tts.get_input_text", return_value="Read this text"), \
              patch.dict(os.environ, env, clear=True):
             self.assertEqual(tts.main(), 0)
             mock_synth.assert_called_once_with(
-                "Read this text", "valid-key", "gemini-2.5-flash-preview-tts", "Kore"
+                "Read this text", "valid-key", "gemini-3.8-flash-lite-tts", "Kore"
             )
             mock_play.assert_called_once()
 

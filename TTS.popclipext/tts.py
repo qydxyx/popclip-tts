@@ -296,7 +296,7 @@ def main() -> int:
 
             model = (
                 os.environ.get("POPCLIP_OPTION_GEMINI_MODEL", "").strip()
-                or "gemini-2.5-flash-preview-tts"
+                or "gemini-3.8-flash-lite-tts"
             )
             voice = os.environ.get("POPCLIP_OPTION_GEMINI_VOICE", "").strip() or "Kore"
 

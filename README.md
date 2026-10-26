@@ -37,12 +37,12 @@ open TTS.popclipext
 ### 2. Gemini 设置
 - **API Key**（必填）：在 [Google AI Studio](https://aistudio.google.com/) 获取。
 - **模型（Model）**：
-  - `gemini-2.5-flash-preview-tts`（默认，低延迟响应）
-  - `gemini-2.5-pro-preview-tts`
+  - `gemini-3.8-flash-lite-tts`（默认，高吞吐低延迟朗读模型）
+  - `gemini-3.8-flash-tts`（旗舰级高表现力模型）
   - 支持手动输入其他 Gemini 模型名称。
 - **音色（Voice）**：
-  - 预设官方音色：`Kore`（默认）、`Puck`、`Aoede`、`Charon`、`Fenrir`、`Zephyr`。
-  - 支持手动输入其他 Gemini 官方预置音色。
+  - 预设 30 种官方 Studio 预置音色：`Kore`（默认）、`Puck`、`Charon`、`Fenrir`、`Aoede`、`Zephyr`、`Achernar`、`Achird`、`Algenib`、`Algieba`、`Alnilam`、`Autonoe`、`Callirrhoe`、`Despina`、`Enceladus`、`Erinome`、`Gacrux`、`Iapetus`、`Laomedeia`、`Leda`、`Orus`、`Pulcherrima`、`Rasalgethi`、`Sadachbia`、`Sadaltager`、`Schedar`、`Sulafat`、`Umbriel`、`Vindemiatrix`、`Zubenelgenubi`。
+  - 支持手动输入任意 Gemini 预置音色名。
 
 ### 3. ElevenLabs 设置
 - **API Key**（必填）：在 [ElevenLabs 控制台](https://elevenlabs.io/) 获取。

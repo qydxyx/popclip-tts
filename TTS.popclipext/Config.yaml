@@ -44,9 +44,9 @@ options:
     type: multiple
     allowOther: true
     values:
-      - gemini-2.5-flash-preview-tts
-      - gemini-2.5-pro-preview-tts
-    defaultValue: gemini-2.5-flash-preview-tts
+      - gemini-3.8-flash-lite-tts
+      - gemini-3.8-flash-tts
+    defaultValue: gemini-3.8-flash-lite-tts
     inset: true
 
   - identifier: gemini_voice
@@ -58,10 +58,34 @@ options:
     values:
       - Kore
       - Puck
-      - Aoede
       - Charon
       - Fenrir
+      - Aoede
       - Zephyr
+      - Achernar
+      - Achird
+      - Algenib
+      - Algieba
+      - Alnilam
+      - Autonoe
+      - Callirrhoe
+      - Despina
+      - Enceladus
+      - Erinome
+      - Gacrux
+      - Iapetus
+      - Laomedeia
+      - Leda
+      - Orus
+      - Pulcherrima
+      - Rasalgethi
+      - Sadachbia
+      - Sadaltager
+      - Schedar
+      - Sulafat
+      - Umbriel
+      - Vindemiatrix
+      - Zubenelgenubi
     defaultValue: Kore
     inset: true
 
