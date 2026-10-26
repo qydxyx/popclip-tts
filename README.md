@@ -1,98 +1,109 @@
-# PopClip 在线 TTS 扩展（Gemini & ElevenLabs）
+# PopClip TTS Extension (Gemini & ElevenLabs)
 
-基于 macOS 原生能力（`/usr/bin/python3` 标准库 + `/usr/bin/afplay`）与 PopClip 扩展规范构建的零第三方依赖划词朗读扩展。
-
-## 特性
-
-- **双服务商支持**：内置 Google Gemini 与 ElevenLabs 在线语音合成。
-- **单按钮智能交互**：PopClip 面板仅占一个按钮（`speaker.wave.2.fill` 图标），在设置中自由切换服务商。
-- **后台异步播放与同文即停**：点击后后台无阻塞朗读；朗读途中再次点击相同选中文本立即停止播放；选中新文本点击自动打断上一段并播放新语音。
-- **安全密钥存储**：API Key 采用 PopClip `secret` 类型，自动托管于 macOS 系统钥匙串（Keychain）。
-- **配置错误自动引导**：初次使用未配置 API Key 或服务端提示密钥无效时，返回状态码 `2`，自动弹出 PopClip 扩展设置界面。
-- **零外部依赖**：仅依赖 macOS 自带 Python 3 标准库，无需 `pip install` 任何额外库。
+A lightweight, zero-dependency [PopClip](https://popclip.app/) extension for macOS that reads selected text aloud using Google Gemini TTS and ElevenLabs text-to-speech APIs.
 
 ---
 
-## 安装方法
+## Features
 
-### 方式一：终端命令安装
-在本项目根目录下执行：
+- **Dual Provider Support**: Seamlessly switch between Google Gemini and ElevenLabs within PopClip extension preferences.
+- **Smart Single-Button Action**: Adds a single speaker button (`speaker.wave.2.fill`) to the PopClip bar.
+- **Background Playback & Toggle Stop**: Plays audio asynchronously in the background via macOS `/usr/bin/afplay`. Clicking again on the same text stops playback immediately; clicking on new text interrupts the previous speech and starts the new one.
+- **Secure Keychain Storage**: API keys are securely managed by PopClip and stored directly in the macOS Keychain.
+- **Automatic Configuration Guide**: Exits with status code `2` on missing or invalid API keys, automatically prompting the PopClip settings interface.
+- **Zero Third-Party Dependencies**: Runs on macOS built-in `/usr/bin/python3` standard library. No `pip install` or external runtimes required.
+
+---
+
+## Installation
+
+### Method 1: Download from Releases (Recommended)
+1. Download `TTS.popclipextz` from the latest [GitHub Release](https://github.com/qydxyx/popclip-tts/releases).
+2. Double-click the downloaded file to install it into PopClip.
+
+### Method 2: From Source
+Clone the repository and open the package:
 ```bash
+git clone https://github.com/qydxyx/popclip-tts.git
+cd popclip-tts
 open TTS.popclipext
 ```
 
-### 方式二：双击安装
-在访达（Finder）中直接双击 `TTS.popclipext` 文件夹，PopClip 会自动识别并提示安装。
-
 ---
 
-## 配置说明
+## Configuration
 
-安装后在 PopClip 偏好设置 -> 扩展列表 -> 点击「TTS / 朗读」右侧齿轮打开设置面板：
+In PopClip Preferences -> **Extensions** -> click the gear icon next to **TTS / 朗读**:
 
-### 1. 服务商（Service Provider）
-- **Gemini**（默认）：速度极快、自然度高，支持多语言。
-- **ElevenLabs**：情感表达丰富，支持多语种及声音克隆。
+### 1. Service Provider
+- **Gemini** (Default): High throughput, ultra-low latency, and natural inflection across 100+ languages.
+- **ElevenLabs**: Expressive, highly nuanced vocal acting with rich voice cloning capabilities across 32+ languages.
 
-### 2. Gemini 设置
-- **API Key**（必填）：在 [Google AI Studio](https://aistudio.google.com/) 获取。
-- **模型（Model）**：
-  - `gemini-3.8-flash-lite-tts`（默认，高吞吐低延迟朗读模型）
-  - `gemini-3.8-flash-tts`（旗舰级高表现力模型）
-  - 支持手动输入其他 Gemini 模型名称。
-- **音色（Voice）**：
-  - 预设 30 种官方 Studio 预置音色：`Kore`（默认）、`Puck`、`Charon`、`Fenrir`、`Aoede`、`Zephyr`、`Achernar`、`Achird`、`Algenib`、`Algieba`、`Alnilam`、`Autonoe`、`Callirrhoe`、`Despina`、`Enceladus`、`Erinome`、`Gacrux`、`Iapetus`、`Laomedeia`、`Leda`、`Orus`、`Pulcherrima`、`Rasalgethi`、`Sadachbia`、`Sadaltager`、`Schedar`、`Sulafat`、`Umbriel`、`Vindemiatrix`、`Zubenelgenubi`。
-  - 支持手动输入任意 Gemini 预置音色名。
+### 2. Gemini Settings
+- **API Key** (Required): Obtain your key from [Google AI Studio](https://aistudio.google.com/).
+- **Model**:
+  - `gemini-3.8-flash-lite-tts` (Default: fast, cost-effective read-aloud model)
+  - `gemini-3.8-flash-tts` (Flagship studio-grade model)
+  - Supports typing any custom Gemini model ID via `Other...`.
+- **Voice**:
+  - 30 prebuilt Google Studio voices: `Kore` (Default), `Puck`, `Charon`, `Fenrir`, `Aoede`, `Zephyr`, `Achernar`, `Achird`, `Algenib`, `Algieba`, `Alnilam`, `Autonoe`, `Callirrhoe`, `Despina`, `Enceladus`, `Erinome`, `Gacrux`, `Iapetus`, `Laomedeia`, `Leda`, `Orus`, `Pulcherrima`, `Rasalgethi`, `Sadachbia`, `Sadaltager`, `Schedar`, `Sulafat`, `Umbriel`, `Vindemiatrix`, `Zubenelgenubi`.
+  - Supports typing any custom voice name via `Other...`.
 
-### 3. ElevenLabs 设置
-- **API Key**（必填）：在 [ElevenLabs 控制台](https://elevenlabs.io/) 获取。
-- **模型（Model）**：
-  - `eleven_flash_v2_5`（默认，低延迟支持 32 种语言）
+### 3. ElevenLabs Settings
+- **API Key** (Required): Obtain your key from the [ElevenLabs Console](https://elevenlabs.io/).
+- **Model**:
+  - `eleven_flash_v2_5` (Default: fast, low-latency multilingual model)
   - `eleven_multilingual_v2`
   - `eleven_turbo_v2_5`
   - `eleven_v3`
-  - 支持手动输入其他 ElevenLabs 模型 ID。
-- **音色（Voice）**：
-  - 预设美式英语与多语种精选音色：
-    - `Rachel`（默认，美音·平静女声，ID: `21m00Tcm4TlvDq8ikWAM`）
-    - `Adam`（美音·深度男声旁白，ID: `pNInz6obpgDQGcFmaJgB`）
-    - `Sarah`（美音·柔和女声，ID: `EXAVITQu4vr4xnSDxMaL`）
-    - `Antoni`（美音·均衡男声，ID: `ErXwobaYiN019PkySvjV`）
-    - `Aria`（美音·表现力女声，ID: `9BWtsMINqrJLrRacOk9x`）
-    - `Josh`（美音·温和深沉男声，ID: `TxGEqnHWrfWFTfGW9XjX`）
-    - `Domi`（美音·干练强势女声，ID: `AZnzlk1XvdvUeBnXmlld`）
-    - `Elli`（美音·情感充沛女声，ID: `MF3mGyEYCl7XYWbV9V6O`）
-    - `Sam`（美音·动态磁性男声，ID: `yoZ06aMxZJJ28mfd3POQ`）
-    - `Michael`（美音·自然叙事男声，ID: `flq6f7yk4E4fJM5XTYuZ`）
-    - `Jessica`（美音·活泼女声，ID: `cgSgspJ2msm6clMCkdW9`）
-    - `Eric`（美音·日常交谈男声，ID: `cjVigY5qzO86Huf0OWal`）
-    - `Will`（美音·轻松随和男声，ID: `bIHbv24MWmeRgasZH58o`）
-    - `Drew`（美音·自信播音男声，ID: `29vD33N1CtxCmqQRPOHJ`）
-    - `Roger`（美音·稳健厚重男声，ID: `CwhRBWXzGAHq8TQ4Fs17`）
-    - `Charlotte`（多语种·特色女声，ID: `XB0fDUnXU5powFXDhCwa`）
-    - `Callum`（多语种·戏剧张力男声，ID: `N2lVS1w4EtoT3dr4eOWO`）
-    - `Freya`（多语种·生动明亮女声，ID: `jsCqWAovK2LkecY7zXl4`）
-  - 支持粘贴任意自定义或克隆的 `voice_id`（配合 `eleven_flash_v2_5` 或 `eleven_multilingual_v2` 模型支持 32+ 种多语种中英混读）。
+  - Supports typing custom model IDs via `Other...`.
+- **Voice**:
+  - Curated American English & Multilingual voices:
+    - `Rachel` (Default: American female, calm)
+    - `Adam` (American male, deep narration)
+    - `Sarah` (American female, soft)
+    - `Antoni` (American male, well-rounded)
+    - `Aria` (American female, expressive)
+    - `Josh` (American male, warm)
+    - `Domi` (American female, strong)
+    - `Elli` (American female, emotional)
+    - `Sam` (American male, dynamic)
+    - `Michael` (American male, natural)
+    - `Jessica` (American female, playful)
+    - `Eric` (American male, conversational)
+    - `Will` (American male, relaxed)
+    - `Drew` (American male, confident)
+    - `Roger` (American male, grounded)
+    - `Charlotte` (Multilingual female, character)
+    - `Callum` (Multilingual male, dramatic)
+    - `Freya` (Multilingual female, expressive)
+  - Supports pasting any custom or cloned `voice_id` via `Other...`.
 
 ---
 
-## 自动化测试
+## Offline Tests
 
-运行本地离线测试套件（覆盖 PCM 封装、网络载荷组装、HTTP 错误码映射及播放状态机）：
+Run the complete test suite (covers PCM to WAV conversion, HTTP payloads, error code mapping, and process state machine):
 ```bash
-/usr/bin/python3 -m unittest discover -s tests
+/usr/bin/python3 -m unittest discover -s tests -v
 ```
 
 ---
 
-## 文件结构
+## Project Structure
 
 ```text
 popclip-tts/
 ├── TTS.popclipext/
-│   ├── Config.yaml      # PopClip 扩展声明与设置界面配置
-│   └── tts.py           # TTS 核心调度、音频转换与后台播放脚本
+│   ├── Config.yaml      # Extension manifest and options schema
+│   └── tts.py           # Core TTS driver, audio packaging, and process manager
 ├── tests/
-│   └── test_tts.py      # 单元测试用例集
-└── README.md            # 项目说明与配置指南
+│   └── test_tts.py      # Offline unit tests
+└── README.md            # Documentation
 ```
+
+---
+
+## License
+
+MIT License
