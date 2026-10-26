@@ -1,0 +1,114 @@
+# PopClip Extension Configuration
+# Documentation: https://popclip.app/dev/
+identifier: com.qydxyx.popclip.tts
+name:
+  en: TTS
+  zh-Hans: 朗读
+icon: symbol:speaker.wave.2.fill
+popclipVersion: 4586
+shellScriptFile: tts.py
+interpreter: /usr/bin/python3
+stdin: text
+
+options:
+  - identifier: provider
+    label:
+      en: Service Provider
+      zh-Hans: 服务商
+    type: multiple
+    values:
+      - gemini
+      - elevenlabs
+    valueLabels:
+      - Gemini
+      - ElevenLabs
+    defaultValue: gemini
+
+  - identifier: gemini_heading
+    type: heading
+    label:
+      en: Gemini Settings
+      zh-Hans: Gemini 设置
+
+  - identifier: gemini_api_key
+    label:
+      en: API Key
+      zh-Hans: API Key
+    type: secret
+    inset: true
+
+  - identifier: gemini_model
+    label:
+      en: Model
+      zh-Hans: 模型
+    type: multiple
+    allowOther: true
+    values:
+      - gemini-2.5-flash-preview-tts
+      - gemini-2.5-pro-preview-tts
+    defaultValue: gemini-2.5-flash-preview-tts
+    inset: true
+
+  - identifier: gemini_voice
+    label:
+      en: Voice
+      zh-Hans: 音色
+    type: multiple
+    allowOther: true
+    values:
+      - Kore
+      - Puck
+      - Aoede
+      - Charon
+      - Fenrir
+      - Zephyr
+    defaultValue: Kore
+    inset: true
+
+  - identifier: elevenlabs_heading
+    type: heading
+    label:
+      en: ElevenLabs Settings
+      zh-Hans: ElevenLabs 设置
+
+  - identifier: elevenlabs_api_key
+    label:
+      en: API Key
+      zh-Hans: API Key
+    type: secret
+    inset: true
+
+  - identifier: elevenlabs_model
+    label:
+      en: Model
+      zh-Hans: 模型
+    type: multiple
+    allowOther: true
+    values:
+      - eleven_flash_v2_5
+      - eleven_multilingual_v2
+      - eleven_turbo_v2_5
+      - eleven_v3
+    defaultValue: eleven_flash_v2_5
+    inset: true
+
+  - identifier: elevenlabs_voice
+    label:
+      en: Voice
+      zh-Hans: 音色
+    type: multiple
+    allowOther: true
+    values:
+      - EXAVITQu4vr4xnSDxMaL
+      - JBFqnCBsd6RMkjVDRZzb
+      - Xb7hH8MSUJpSbSDYk0k2
+      - onwK4e9ZLuTAKqWW03F9
+      - pFZP5JQG7iQjIQuC4Bku
+    valueLabels:
+      - Sarah
+      - George
+      - Alice
+      - Daniel
+      - Lily
+    defaultValue: EXAVITQu4vr4xnSDxMaL
+    inset: true
