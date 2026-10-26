@@ -123,16 +123,42 @@ options:
     type: multiple
     allowOther: true
     values:
+      - 21m00Tcm4TlvDq8ikWAM
+      - pNInz6obpgDQGcFmaJgB
       - EXAVITQu4vr4xnSDxMaL
-      - JBFqnCBsd6RMkjVDRZzb
-      - Xb7hH8MSUJpSbSDYk0k2
-      - onwK4e9ZLuTAKqWW03F9
-      - pFZP5JQG7iQjIQuC4Bku
+      - ErXwobaYiN019PkySvjV
+      - 9BWtsMINqrJLrRacOk9x
+      - TxGEqnHWrfWFTfGW9XjX
+      - AZnzlk1XvdvUeBnXmlld
+      - MF3mGyEYCl7XYWbV9V6O
+      - yoZ06aMxZJJ28mfd3POQ
+      - flq6f7yk4E4fJM5XTYuZ
+      - cgSgspJ2msm6clMCkdW9
+      - cjVigY5qzO86Huf0OWal
+      - bIHbv24MWmeRgasZH58o
+      - 29vD33N1CtxCmqQRPOHJ
+      - CwhRBWXzGAHq8TQ4Fs17
+      - XB0fDUnXU5powFXDhCwa
+      - N2lVS1w4EtoT3dr4eOWO
+      - jsCqWAovK2LkecY7zXl4
     valueLabels:
-      - Sarah
-      - George
-      - Alice
-      - Daniel
-      - Lily
-    defaultValue: EXAVITQu4vr4xnSDxMaL
+      - Rachel (American · Calm)
+      - Adam (American · Deep Narration)
+      - Sarah (American · Soft)
+      - Antoni (American · Balanced)
+      - Aria (American · Expressive)
+      - Josh (American · Warm)
+      - Domi (American · Strong)
+      - Elli (American · Emotional)
+      - Sam (American · Dynamic)
+      - Michael (American · Natural)
+      - Jessica (American · Playful)
+      - Eric (American · Conversational)
+      - Will (American · Relaxed)
+      - Drew (American · Confident)
+      - Roger (American · Grounded)
+      - Charlotte (Multilingual · Character)
+      - Callum (Multilingual · Dramatic)
+      - Freya (Multilingual · Expressive)
+    defaultValue: 21m00Tcm4TlvDq8ikWAM
     inset: true

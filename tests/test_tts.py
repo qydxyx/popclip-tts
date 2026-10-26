@@ -145,14 +145,14 @@ class TestTTSSynthesis(unittest.TestCase):
             text="Testing ElevenLabs",
             api_key="test-eleven-key",
             model="eleven_flash_v2_5",
-            voice="EXAVITQu4vr4xnSDxMaL",
+            voice="21m00Tcm4TlvDq8ikWAM",
         )
 
         self.assertEqual(ext, ".mp3")
         self.assertEqual(audio_bytes, raw_mp3)
 
         req = mock_urlopen.call_args[0][0]
-        self.assertIn("/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL", req.full_url)
+        self.assertIn("/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM", req.full_url)
         self.assertIn("output_format=mp3_44100_128", req.full_url)
         self.assertEqual(req.headers["Xi-api-key"], "test-eleven-key")
         self.assertEqual(req.headers["Accept"], "audio/mpeg")

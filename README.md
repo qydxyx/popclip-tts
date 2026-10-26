@@ -53,13 +53,26 @@ open TTS.popclipext
   - `eleven_v3`
   - 支持手动输入其他 ElevenLabs 模型 ID。
 - **音色（Voice）**：
-  - 预设通用音色：
-    - `Sarah`（默认，ID: `EXAVITQu4vr4xnSDxMaL`）
-    - `George`（ID: `JBFqnCBsd6RMkjVDRZzb`）
-    - `Alice`（ID: `Xb7hH8MSUJpSbSDYk0k2`）
-    - `Daniel`（ID: `onwK4e9ZLuTAKqWW03F9`）
-    - `Lily`（ID: `pFZP5JQG7iQjIQuC4Bku`）
-  - 支持粘贴任意自定义或克隆的 `voice_id`。
+  - 预设美式英语与多语种精选音色：
+    - `Rachel`（默认，美音·平静女声，ID: `21m00Tcm4TlvDq8ikWAM`）
+    - `Adam`（美音·深度男声旁白，ID: `pNInz6obpgDQGcFmaJgB`）
+    - `Sarah`（美音·柔和女声，ID: `EXAVITQu4vr4xnSDxMaL`）
+    - `Antoni`（美音·均衡男声，ID: `ErXwobaYiN019PkySvjV`）
+    - `Aria`（美音·表现力女声，ID: `9BWtsMINqrJLrRacOk9x`）
+    - `Josh`（美音·温和深沉男声，ID: `TxGEqnHWrfWFTfGW9XjX`）
+    - `Domi`（美音·干练强势女声，ID: `AZnzlk1XvdvUeBnXmlld`）
+    - `Elli`（美音·情感充沛女声，ID: `MF3mGyEYCl7XYWbV9V6O`）
+    - `Sam`（美音·动态磁性男声，ID: `yoZ06aMxZJJ28mfd3POQ`）
+    - `Michael`（美音·自然叙事男声，ID: `flq6f7yk4E4fJM5XTYuZ`）
+    - `Jessica`（美音·活泼女声，ID: `cgSgspJ2msm6clMCkdW9`）
+    - `Eric`（美音·日常交谈男声，ID: `cjVigY5qzO86Huf0OWal`）
+    - `Will`（美音·轻松随和男声，ID: `bIHbv24MWmeRgasZH58o`）
+    - `Drew`（美音·自信播音男声，ID: `29vD33N1CtxCmqQRPOHJ`）
+    - `Roger`（美音·稳健厚重男声，ID: `CwhRBWXzGAHq8TQ4Fs17`）
+    - `Charlotte`（多语种·特色女声，ID: `XB0fDUnXU5powFXDhCwa`）
+    - `Callum`（多语种·戏剧张力男声，ID: `N2lVS1w4EtoT3dr4eOWO`）
+    - `Freya`（多语种·生动明亮女声，ID: `jsCqWAovK2LkecY7zXl4`）
+  - 支持粘贴任意自定义或克隆的 `voice_id`（配合 `eleven_flash_v2_5` 或 `eleven_multilingual_v2` 模型支持 32+ 种多语种中英混读）。
 
 ---
 

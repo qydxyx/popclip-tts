@@ -314,7 +314,7 @@ def main() -> int:
             )
             voice = (
                 os.environ.get("POPCLIP_OPTION_ELEVENLABS_VOICE", "").strip()
-                or "EXAVITQu4vr4xnSDxMaL"
+                or "21m00Tcm4TlvDq8ikWAM"
             )
 
             audio_bytes, suffix = synthesize_elevenlabs(text, api_key, model, voice)
